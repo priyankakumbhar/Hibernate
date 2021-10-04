@@ -1,0 +1,59 @@
+package com.hibernate.cruddemo;
+import com.utils.DateUtils;
+
+import java.sql.SQLSyntaxErrorException;
+import java.text.ParseException;
+import java.util.Date;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
+import com.hibernate.demo.entity.Course;
+import com.hibernate.demo.entity.Instructor;
+import com.hibernate.demo.entity.InstructorDetails;
+import com.hibernate.demo.entity.Student;
+
+public class DeleteCoursesDemo {
+
+	public static void main(String[] args) {
+		
+		//create session factory
+		SessionFactory factory =new Configuration()
+								.configure("hibernate.cfg.xml")
+								.addAnnotatedClass(Instructor.class)
+								.addAnnotatedClass(InstructorDetails.class)
+								.addAnnotatedClass(Course.class)
+								.buildSessionFactory();
+		//create session
+		Session session=factory.getCurrentSession();
+		
+		try
+		{
+			;
+			
+			//start transaction
+			session.beginTransaction();
+			
+			//get the course
+			 int id=2;
+			 Course course=session.get(Course.class, id);
+			
+			 //delete course
+			 System.out.println("Deleting course: "+course);
+			 session.delete(course);
+			 System.out.println("Deleted Course: "+course);
+			
+			//commit transaction
+			session.getTransaction().commit();
+			System.out.println("Done");
+		}
+		finally
+		{
+			session.close();
+			factory.close();
+		}
+
+	}
+
+}
